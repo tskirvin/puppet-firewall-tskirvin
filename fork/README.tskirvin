@@ -1,0 +1,35 @@
+        I've written up a patch to support arrays of source/destination
+blocks for iptables, as the documentation says was supposed to work.
+However, doing so involved combining two source trees in some pretty ugly
+ways:
+
+    https://github.com/puppetlabs/puppetlabs-firewall
+    https://github.com/glesperance/puppetlabs-firewall
+
+        The former is the "main" source tree.  The latter is some initial
+work to allow for the arrays, which mostly worked but wasn't able to
+correctly detect that the environment was already set (and as such would
+try to re-initialize iptables on every run).
+
+        More worrisome, I don't have a good test suite for this, mostly
+because I don't know how to adequately model the problem.  Specifically,
+we need to be able to model:
+
+1.  When there are no changes between runs, is this correctly detected?
+2.  When there are changes, can we add/remove items correctly?
+
+        As such, I haven't submitted the patch directly.  I have made
+reference to the patch on the "official" github comment area:
+
+    https://github.com/puppetlabs/puppetlabs-firewall/issues/113
+
+        Hopefully I'll be able to submit something soon.  For now, I have
+deployed the patch in our 'itb' branch, and tested it extensively on a
+couple of servers.  Once everything is ready to go, I can deploy it to
+production and update more things to watch the 'netrange_cms' hiera data
+instead of 'netrange_fermi'.
+
+                                    - Tim Skirvin (tskirvin@fnal.gov)
+-- 
+HPC Systems Administrator / Developer    http://www.linkedin.com/in/tskirvin
+    Fermilab Scientific Computing                   CMS Tier I
